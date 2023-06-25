@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import PrompCard from './PromptCard'
+import PromptCard from './PromptCard'
 
 //mini component that is used only in the Feed comp!
 const PromptCardList = ({ data, handleTagClick }) => {
