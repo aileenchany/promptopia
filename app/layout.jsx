@@ -1,7 +1,7 @@
 import '@styles/globals.css'
 
 import Nav from '@components/Nav'
-import Provider from '@components/Provider'
+import Provider from '@components/Provider' //the Provider is a higher order component and we need to wrap the body content
 
 export const metadata = {
   title: "Promptopia",
@@ -12,14 +12,16 @@ const RootLayout = ({children}) => {
   return (
     <html lang="en">
       <body>
-        <div className='main'>
-          <div className='gradient' />
-        </div>
+        <Provider>
+          <div className='main'>
+            <div className='gradient' />
+          </div>
 
-        <main>
-          <Nav />
-          {children}
-        </main>
+          <main>
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   )
