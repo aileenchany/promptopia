@@ -7,7 +7,7 @@ import { signIn, signOut, useSession, getProviders} from 'next-auth/react'
 
 
 const Nav = () => {
-  const { data: session } = useSession(); //will allow us to get user data
+  const { data: session } = useSession(); //will allow us to get user data and we are renaming it to "session"
 
   const [providers, setProviders] = useState(null);
   const [toggleDropDown, setToggleDropDown] = useState(false);

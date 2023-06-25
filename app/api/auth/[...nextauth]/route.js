@@ -1,6 +1,8 @@
-import NextAuth from "next-auth/next"; // "next-auth";
+import NextAuth from "next-auth"; // "next-auth";
 import GoogleProvider from "next-auth/providers/google"; //this is what JSMastery wrote down
 //import { GoogleProfile } from "next-auth/providers/google"; //this is what VS Code gave me as option
+
+// /https://authjs.dev/getting-started/oauth-tutorial
 
 import User from '@models/user';
 import { connectToDB } from '@utils/database';
@@ -30,7 +32,7 @@ import { connectToDB } from '@utils/database';
 const  handler = NextAuth({
   providers: [
     GoogleProvider({
-      clienId: process.env.GOOGLE_ID,
+      clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     })
   ],
@@ -56,7 +58,7 @@ const  handler = NextAuth({
         if (!userExists) {
           await User.create({
             email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(), //here we clean any spaces with empty spaces and lowercase
+            username: profile.name.replace(/\s/g, "").toLowerCase(), //here we clean any spaces with empty spaces and lowercase
             image: profile.picture,
           });
         }
