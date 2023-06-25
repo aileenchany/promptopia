@@ -4,18 +4,23 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import Form from '@components/Form'
 
-const EditPrompt = () => {
+const UpdatePrompt = () => {
   const router = useRouter(); //importing router
   const searchParams = useSearchParams(); //this router hook accesses the param, ex "/create-prompt/id", 
   const promptId = searchParams.get('id'); //and allows us to access the id
 
-  const [submitting, setsubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
     prompt: '',
     tag: '',
   });
 
-  //
+  // on page load, only if there is an ID it means we are in the Update page
+  // so we fetch the data for the prompt using the ID
+  // we set the values for prompt and tag in the setPost() hook
+  // this sends the data down to the Form component which causes a re-render of the Form
+  // displaying the data for Prompt with ID
+  // we can then make any changes to the Form and Submitting will trigger the updatePrompt function here!
   useEffect(() => {
     const getPromptDetails = async () => {
       const res = await fetch(`/api/prompt/${promptId}`);
@@ -24,15 +29,15 @@ const EditPrompt = () => {
         prompt: data.prompt,
         tag: data.tag
       });
-
-      //we only want to call the function if promptId exists!
-      if (promptId) getPromptDetails();
     }
+    //we only want to call the function if promptId exists!
+    if (promptId) getPromptDetails();
+
   }, [promptId])
 
   const updatePrompt = async (e) => {
     e.preventDefault();
-    setsubmitting(true);
+    setSubmitting(true);
 
     if (!promptId) return alert('Prompt ID not found');
     
@@ -53,7 +58,7 @@ const EditPrompt = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setsubmitting(false); //clean up
+      setSubmitting(false); //clean up
     }
   }
 
@@ -68,4 +73,4 @@ const EditPrompt = () => {
   )
 }
 
-export default EditPrompt
+export default UpdatePrompt
