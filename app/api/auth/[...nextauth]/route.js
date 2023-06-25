@@ -37,9 +37,8 @@ const  handler = NextAuth({
   callbacks: 
     {
       async session({ session }) {
-      const sessionUser = await User.findOne({
-        email: session.user.email
-      })
+        //store the user id from MongoDB to session
+      const sessionUser = await User.findOne({ email: session.user.email });
 
       session.user.id = sessionUser._id.toString(); //update the user who is online
 
@@ -51,24 +50,22 @@ const  handler = NextAuth({
         await connectToDB();
 
         //check if a user already exists
-        const userExists = await User.findOne({
-          email: profile.email
-        })
+        const userExists = await User.findOne({ email: profile.email });
 
         //if not, create a new user and save to database
         if (!userExists) {
           await User.create({
             email: profile.email,
             username: profile.name.replace(" ", "").toLowerCase(), //here we clean any spaces with empty spaces and lowercase
-            image: profile.picture
-          })
+            image: profile.picture,
+          });
         }
 
         //if looged successfully return true, or in catch block console.log(error message)
         return true;
 
       } catch (error) {
-        console.log(error);
+        console.log("Error checking if user exists: " + error.message);
         return false;
       }
     },
@@ -76,4 +73,4 @@ const  handler = NextAuth({
   
 }) //handler is a function and we're passing in the options object
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }
